@@ -1,0 +1,16 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+    <%= listings._id %>
+        <p><%= listings.title %> </p>
+        <p><%= listings.description %></p>
+        <img src="<%= listings.image %>" alt="" height="200px" width="200px">
+        <p><%= listings.location %></p>
+        <p><%= listings.price %></p>
+        <p><%= listings.country %></p>
+        <br>
+    <a href="/listing/<%= listings._id %>/edit">Edit this</a>
+    <br>
+    <form action="/listing/<%= listings._id %>?_method=DELETE" method="post">
+        <button>delete</button>
+    </form>
+</body>

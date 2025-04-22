@@ -1,0 +1,25 @@
+<% layout('/layouts/boilerplate') %>
+<body>
+    <form action="http://localhost:5000/listings" method="post">
+        Name:
+        <input type="text" name="title" id="">
+        <br>
+        Address:
+        <textarea name="description" id="" rows="5" cols="20"></textarea>
+        <br>
+        Image Url:
+        <input type="text" name="image" id="" placeholder="image">
+        <br>
+        Price:
+        <input type="number" name="price" id="">
+        <br>
+        Location:
+        <input type="text" name="location" id="">
+        <br>
+        country:
+        <input type="text" name="country">
+        <br>
+        Submit:
+        <button type="submit">Submit</button>
+    </form>
+</body>

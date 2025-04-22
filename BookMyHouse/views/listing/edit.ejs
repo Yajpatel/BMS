@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="http://localhost:5000/listing/<%= listings._id %>?_method=PUT" method="post">
+        <input type="text" name="title" id="" placeholder="<%= listings.title %>" value="<%= listings.title %>">
+        <textarea name="description" id="" rows="10" cols="20"><%= listings.description %></textarea>
+        
+        <input type="number" name="price" id="" placeholder="><%= listings.price %>" value="<%= listings.price %>">
+        <input type="text" name="location" id="" placeholder="<%= listings.location %>" value="<%= listings.location %>">
+        <input type="text" name="country" placeholder="<%= listings.country %>" value="<%= listings.country %>">
+        <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
