@@ -1,19 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form action="http://localhost:5000/listing/<%= listings._id %>?_method=PUT" method="post">
-        <input type="text" name="title" id="" placeholder="<%= listings.title %>" value="<%= listings.title %>">
-        <textarea name="description" id="" rows="10" cols="20"><%= listings.description %></textarea>
-        
-        <input type="number" name="price" id="" placeholder="><%= listings.price %>" value="<%= listings.price %>">
-        <input type="text" name="location" id="" placeholder="<%= listings.location %>" value="<%= listings.location %>">
-        <input type="text" name="country" placeholder="<%= listings.country %>" value="<%= listings.country %>">
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html>
+<% layout('layouts/boilerplate') %>
+
+<div class="container my-5">
+    <div class="card shadow-lg border-0 rounded-4 p-5">
+        <h2 class="text-center mb-4 fw-bold text-primary">✏️ Edit Your Listing</h2>
+        <form action="http://localhost:5000/listing/<%= listings._id %>?_method=PUT" method="post" class="needs-validation" novalidate>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label for="title" class="form-label">🏷️ Title</label>
+                    <input type="text" name="listing[title]" id="title" class="form-control" value="<%= listings.title %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="price" class="form-label">💰 Price</label>
+                    <input type="number" name="listing[price]" id="price" class="form-control" value="<%= listings.price %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="location" class="form-label">📍 Location</label>
+                    <input type="text" name="listing[location]" id="location" class="form-control" value="<%= listings.location %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="country" class="form-label">🌍 Country</label>
+                    <input type="text" name="listing[country]" id="country" class="form-control" value="<%= listings.country %>" required>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="image" class="form-label">🖼️ Image URL</label>
+                    <input type="text" name="listing[image]" id="image" class="form-control" placeholder="https://example.com/image.jpg" value="<%= listings.image %>"  required >
+                    <div class="invalid-feedback">Please provide a valid image URL.</div>
+                </div>
+
+                <div class="col-12">
+                    <label for="description" class="form-label">📝 Description</label>
+                    <textarea name="listing[description]" id="description" class="form-control" rows="4" required><%= listings.description %></textarea>
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn btn-lg btn-warning text-white fw-bold px-5 shadow">🔄 Update Listing</button>
+            </div>
+        </form>
+    </div>
+</div>

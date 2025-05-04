@@ -1,16 +1,118 @@
 <% layout('/layouts/boilerplate') %>
-<body>
-    <%= listings._id %>
-        <p><%= listings.title %> </p>
-        <p><%= listings.description %></p>
-        <img src="<%= listings.image %>" alt="" height="200px" width="200px">
-        <p><%= listings.location %></p>
-        <p><%= listings.price %></p>
-        <p><%= listings.country %></p>
-        <br>
-    <a href="/listing/<%= listings._id %>/edit">Edit this</a>
-    <br>
-    <form action="/listing/<%= listings._id %>?_method=DELETE" method="post">
-        <button>delete</button>
-    </form>
-</body>
+
+<style>
+    body {
+        background: linear-gradient(135deg, #e0f7fa, #fff3e0);
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .listing-section {
+        max-width: 1200px;
+        margin: auto;
+        padding: 3rem 1rem;
+    }
+
+    .listing-image {
+        height: 320px;
+        width: 100%;
+        object-fit: cover;
+        border-radius: 1rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .listing-info p {
+        font-size: 1.05rem;
+        color: #333;
+    }
+
+    .review-card {
+        background: #fff;
+        border-radius: 1rem;
+        padding: 1rem 1.2rem;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .btn-glow {
+        transition: all 0.3s ease;
+    }
+
+    .btn-glow:hover {
+        box-shadow: 0 0 15px rgba(0, 123, 255, 0.5);
+    }
+
+    .fancy-form {
+        background: #ffffffdd;
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+</style>
+
+<div class="listing-section">
+
+    <div class="row g-4 align-items-center">
+        <div class="col-md-5">
+            <img src="<%= listings.image %>" alt="Listing Image" class="listing-image">
+        </div>
+        <div class="col-md-7 listing-info">
+            <h2 class="fw-bold text-primary mb-3"><%= listings.title %></h2>
+            <p><i class="bi bi-card-text me-2"></i><strong>Description:</strong> <%= listings.description %></p>
+            <p><i class="bi bi-geo-alt me-2"></i><strong>Location:</strong> <%= listings.location %></p>
+            <p><i class="bi bi-currency-dollar me-2"></i><strong>Price:</strong> $<%= listings.price %></p>
+            <p><i class="bi bi-globe me-2"></i><strong>Country:</strong> <%= listings.country %></p>
+
+            <div class="mt-4 d-flex gap-3">
+                <a href="/listing/<%= listings._id %>/edit" class="btn btn-outline-primary btn-glow px-4">
+                    ✏️ Edit
+                </a>
+                <form action="/listing/<%= listings._id %>?_method=DELETE" method="post" onsubmit="return confirm('Are you sure you want to delete this listing?');">
+                    <button class="btn btn-outline-danger btn-glow px-4">🗑️ Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Review Form -->
+    <div class="mt-5">
+        <h4 class="mb-2 text-secondary">Leave a Review</h4>
+        <form action="/listing/<%= listings._id %>/reviews" class="fancy-form bg-light rounded-4 shadow-sm p-3" method="post" novalidate style="max-width: 800px;">
+            <div class="mb-2">
+                <label for="range" class="form-label fw-semibold mb-1">Rating</label>
+                <input type="range" class="form-range" name="review[rating]" id="range" min="1" max="5" required>
+                <small class="text-muted">Selected: <span id="rating-value">3</span> / 5</small>
+            </div>
+    
+            <div class="mb-2">
+                <label for="comment" class="form-label fw-semibold mb-1">Comment</label>
+                <textarea class="form-control" name="review[comment]" id="comment" rows="2" placeholder="Write your thoughts here..." required></textarea>
+            </div>
+    
+            <div class="text-end mt-2">
+                <button type="submit" class="btn btn-primary btn-glow px-3 py-1">Submit</button>
+            </div>
+        </form>
+    </div>
+    
+
+    <!-- All Reviews -->
+    <h2 class="text-center text-primary mt-5 mb-3 fw-bold">🌟 Reviews 🌟</h2>
+
+    <div class="row justify-content-center">
+        <% for (let review of listings.reviews) { %>
+            <div class="col-md-5 col-sm-10 mb-3">
+                <div class="review-card">
+                    <div class="d-flex align-items-center mb-1">
+                        <i class="bi bi-star-fill text-warning me-2"></i>
+                        <span class="fw-medium text-dark">Rating: <%= review.rating %> / 5</span>
+                    </div>
+                    <p class="mb-0 text-muted" style="font-size: 0.95rem;"><%= review.comment %></p>
+                    <div class="text-end">
+                        <form action="/listing/<%= listings._id %>/reviews/<%= review._id %>?_method=DELETE" method="post">
+                            <button class="delete btn btn-dark mt-2">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        <% } %>
+    </div>
+</div>

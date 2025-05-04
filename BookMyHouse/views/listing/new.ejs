@@ -1,25 +1,49 @@
 <% layout('/layouts/boilerplate') %>
-<body>
-    <form action="http://localhost:5000/listings" method="post">
-        Name:
-        <input type="text" name="title" id="">
-        <br>
-        Address:
-        <textarea name="description" id="" rows="5" cols="20"></textarea>
-        <br>
-        Image Url:
-        <input type="text" name="image" id="" placeholder="image">
-        <br>
-        Price:
-        <input type="number" name="price" id="">
-        <br>
-        Location:
-        <input type="text" name="location" id="">
-        <br>
-        country:
-        <input type="text" name="country">
-        <br>
-        Submit:
-        <button type="submit">Submit</button>
-    </form>
-</body>
+
+<div class="container py-5">
+    <div class="card shadow-lg border-0 rounded-4 p-4">
+        <h2 class="mb-4 text-center fw-bold text-dark">🚀 Create a Stunning Listing</h2>
+        <form action="/listing" method="post" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="title" class="form-label">📝 Name</label>
+                <input type="text" name="listing[title]" id="title" class="form-control" required placeholder="Enter listing title">
+                <div class="invalid-feedback">Title is required.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">🏡 Address</label>
+                <textarea name="listing[description]" id="description" rows="4" class="form-control" required placeholder="Enter address details"></textarea>
+                <div class="invalid-feedback">Address is required.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="image" class="form-label">🖼️ Image URL</label>
+                <input type="text" name="listing[image]" id="image" class="form-control" placeholder="https://example.com/image.jpg">
+                <div class="invalid-feedback">Please provide a valid image URL.</div>
+            </div>
+
+            <div class="mb-3">
+                <label for="price" class="form-label">💰 Price</label>
+                <input type="text" name="listing[price]" id="price" class="form-control" required placeholder="e.g. 1200">
+                <div class="invalid-feedback">Price is required and must be a number.</div>
+            </div>
+
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="location" class="form-label">📍 Location</label>
+                    <input type="text" name="listing[location]" id="location" class="form-control" required>
+                    <div class="invalid-feedback">Location is required.</div>
+                </div>
+                <div class="mb-3 col-md-8">
+                    <label for="country" class="form-label">🌍 Country</label>
+                    <input type="text" name="listing[country]" id="country" class="form-control" required>
+                    <div class="invalid-feedback">Country is required.</div>
+                </div>
+            </div>
+
+            <div class="text-center">
+                <button type="submit" class="btn btn-lg btn-success px-5 py-2 fw-bold shadow-sm">✨ Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
