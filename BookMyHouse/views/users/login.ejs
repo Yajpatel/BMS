@@ -1,0 +1,16 @@
+<% layout('layouts/boilerplate') %>
+<form action="/login" method="POST" class="p-4 border rounded shadow-sm bg-white" style="max-width: 400px; margin: auto; margin-top: 50px;">
+    <h2 class="text-center mb-4">Login</h2>
+    <div class="mb-3">
+        <label class="form-label">Username</label>
+        <input type="text" name="username" class="form-control" required>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" required>
+    </div>
+    <button type="submit" class="btn btn-success w-100">Login</button>
+    <div class="text-center mt-3">
+        <a href="/signup">Don't have an account? Sign Up</a>
+    </div>
+</form>

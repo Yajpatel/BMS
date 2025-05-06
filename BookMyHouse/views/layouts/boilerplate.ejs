@@ -12,6 +12,17 @@
     <%- include('../includes/navbar') %>
 
     <div class="container">
+        <% if (createsuccess && createsuccess.length) { %>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <%= createsuccess %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } else if (createfail && createfail.length) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <%= createfail %>
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+          <% } %>
         <%- body %>
     </div>
 

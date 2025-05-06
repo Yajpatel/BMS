@@ -9,18 +9,46 @@ const chalk = require('chalk');
 // const { listingschema, reviewschema } = require('./schemavalidation');
 const listingrouter = require('./routes/listing.js');
 const reviewrouter = require('./routes/review.js');
+const userRouter = require('./routes/user.js')
 const ExpressError = require('./utils/MyExpressError');
 
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.js');
+
 const session = require('express-session');
-app.use(session({secret : 'mysecret',resave : false , saveUninitialized : false}))
+app.use(session({
+    secret : 'mysecret',
+    resave : false , 
+    saveUninitialized : false,
+    cookie : {
+        expires : Date.now() + 24*60*60,
+        maxAge : 24*60*60,
+        httpOnly : true
+    }
+}))
 
-// const cookieParser = require('cookie-parser')
-// app.use(cookieParser())
+const flash = require('connect-flash');
 
-// const wrapasync = require('./utils/wrapasync');
-// const { Review } = require('./models/review');
-// const Listing = require('./models/listing');
+//this should be below session
+app.use(passport.initialize());
+app.use(passport.session()); //It allows the user to stay authenticated between requests without needing to re-enter their credentials every time.
+passport.use(new LocalStrategy(User.authenticate())); // passport.use() is how we define which strategy Passport will use to authenticate users.Here, we are using LocalStrategy, which is for username and password authentication (this is the "local" strategy).
+//User.authenticate is a helper method provided by the passport-local-mongoose plugin. It checks if the username/password match in the database.If they do, it returns the user object.If not, it will trigger a failure callback.
+passport.serializeUser(User.serializeUser()); // When the user logs in successfully, Passport saves just the user's ID (not the whole user data) into the session.
+passport.deserializeUser(User.deserializeUser()); // Every time a request comes in (after the user has logged in), Passport looks at the user ID stored in the session and fetches the user's full details from the database. 
 
+
+
+// app.get('/demouser',async(req,res)=>{
+//     let user = new User({
+//         email : 'abc@gmail.com',
+//         username : 'abc'
+//     })
+//     // await user.save();
+//     let registered = await User.register(user,'password');
+//     res.send(registered);
+// })
 // Connect to MongoDB
 main().then(() => console.log("MongoDB connected")).catch(err => console.log("Mongo error", err));
 async function main() {
@@ -34,19 +62,28 @@ app.engine('ejs', engine);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(methodOverride("_method"));
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));    
 
-
-
+app.use(flash());
+//req.locals
+app.use((req,res,next)=>{
+    res.locals.createsuccess = req.flash('created');
+    res.locals.createfail = req.flash('failed');
+    // console.log(res.locals.createsuccess);
+    // console.log(res.locals.createfail);
+    next();
+})
+// use flash before this routing
 // Mount Routes
 app.use('/listing', listingrouter);
 app.use('/listing/:id/reviews',reviewrouter)
+app.use('/',userRouter);
+
 
 // Home route
 app.get("/", (req, res) => {
     res.send("Wanderland Home");
 });
-
 
 
 // 404 Handler

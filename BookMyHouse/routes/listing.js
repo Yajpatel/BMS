@@ -4,7 +4,7 @@ const wrapasync = require('../utils/wrapasync');
 const ExpressError = require('../utils/MyExpressError');
 const Listing = require("../models/listing");
 let { listingschema } = require('../schemavalidation');
-
+const islogin = require('../middleware');
 // Middleware for validating listings
 const validationlisting = (req, res, next) => {
     console.log(req.body.listing);
@@ -25,13 +25,18 @@ router.get("/", async (req, res) => {
 });
 
 // create get
-router.get("/new", (req, res) => {
-    res.render('listing/new.ejs');
+router.get("/new", islogin, (req, res) => {
+    console.log(req.user)
+        res.render('listing/new.ejs');
 });
 // CREATE POST - create new listing
 router.post("/", validationlisting, wrapasync(async (req, res) => {
     let newlisting = new Listing(req.body.listing);
     await newlisting.save();
+
+    req.flash('created','new listing created');
+    // req.flash('failed','failed to create listing');
+
     console.log("new inserted successfully");
     res.redirect("/listing");
 }));
@@ -40,13 +45,19 @@ router.post("/", validationlisting, wrapasync(async (req, res) => {
 router.get("/:id", wrapasync(async (req, res, next) => {
     let { id } = req.params;
     let listings = await Listing.findById(id).populate('reviews');
-    if (!listings) return next(new ExpressError(404, "Listing not found"));
-    res.render('listing/show.ejs', { listings });
+    if (!listings){
+        req.flash('failed','id deleted that u are finding or not found');
+       res.redirect('/listing');
+    }
+    else{
+        res.render('listing/show.ejs', { listings });
+    }
+    //  return next(new ExpressError(404, "Listing not found"));
 }));
 
 
 // EDIT - show edit form
-router.get("/:id/edit", wrapasync(async (req, res) => {
+router.get("/:id/edit", islogin,wrapasync(async (req, res) => {
     let { id } = req.params;
     let listings = await Listing.findById(id);
     res.render('listing/edit.ejs', { listings });
@@ -65,14 +76,16 @@ router.put("/:id", validationlisting, wrapasync(async (req, res) => {
         country
     });
 
+    req.flash('created','listing updated');
     console.log("update successful");
     res.redirect("/listing");
 }));
 
 // DELETE - delete listing
-router.delete("/:id", wrapasync(async (req, res) => {
+router.delete("/:id",islogin, wrapasync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash('created','listing deleted');
     console.log("deleted successfully");
     res.redirect("/listing");
 }));
