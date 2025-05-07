@@ -55,12 +55,15 @@
             <img src="<%= listings.image %>" alt="Listing Image" class="listing-image">
         </div>
         <div class="col-md-7 listing-info">
+            <h4 class="fw-bold text-primary mb-3"><%= listings.owner.username %></h4>
             <h2 class="fw-bold text-primary mb-3"><%= listings.title %></h2>
             <p><i class="bi bi-card-text me-2"></i><strong>Description:</strong> <%= listings.description %></p>
             <p><i class="bi bi-geo-alt me-2"></i><strong>Location:</strong> <%= listings.location %></p>
             <p><i class="bi bi-currency-dollar me-2"></i><strong>Price:</strong> $<%= listings.price %></p>
             <p><i class="bi bi-globe me-2"></i><strong>Country:</strong> <%= listings.country %></p>
 
+        
+                
             <div class="mt-4 d-flex gap-3">
                 <a href="/listing/<%= listings._id %>/edit" class="btn btn-outline-primary btn-glow px-4">
                     ✏️ Edit
@@ -69,10 +72,12 @@
                     <button class="btn btn-outline-danger btn-glow px-4">🗑️ Delete</button>
                 </form>
             </div>
+            
         </div>
     </div>
 
     <!-- Review Form -->
+     <% if(curruser) {%>
     <div class="mt-5">
         <h4 class="mb-2 text-secondary">Leave a Review</h4>
         <form action="/listing/<%= listings._id %>/reviews" class="fancy-form bg-light rounded-4 shadow-sm p-3" method="post" novalidate style="max-width: 800px;">
@@ -92,15 +97,19 @@
             </div>
         </form>
     </div>
-    
+    <% } %>
 
     <!-- All Reviews -->
+     
     <h2 class="text-center text-primary mt-5 mb-3 fw-bold">🌟 Reviews 🌟</h2>
 
     <div class="row justify-content-center">
         <% for (let review of listings.reviews) { %>
             <div class="col-md-5 col-sm-10 mb-3">
                 <div class="review-card">
+                    <div>
+                        <h3 class="fw-medium text-dark"><%= review.author.username %></h3>
+                    </div>
                     <div class="d-flex align-items-center mb-1">
                         <i class="bi bi-star-fill text-warning me-2"></i>
                         <span class="fw-medium text-dark">Rating: <%= review.rating %> / 5</span>
@@ -115,4 +124,5 @@
             </div>
         <% } %>
     </div>
+    
 </div>

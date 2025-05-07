@@ -69,6 +69,7 @@ app.use(flash());
 app.use((req,res,next)=>{
     res.locals.createsuccess = req.flash('created');
     res.locals.createfail = req.flash('failed');
+    res.locals.curruser = req.user;
     // console.log(res.locals.createsuccess);
     // console.log(res.locals.createfail);
     next();
@@ -76,7 +77,7 @@ app.use((req,res,next)=>{
 // use flash before this routing
 // Mount Routes
 app.use('/listing', listingrouter);
-app.use('/listing/:id/reviews',reviewrouter)
+app.use('/listing/:id/reviews',reviewrouter);
 app.use('/',userRouter);
 
 

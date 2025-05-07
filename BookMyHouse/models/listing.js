@@ -22,7 +22,11 @@ const listingSchema = new Schema({
                                             // ||
             // let Review = mongoose.model('Review',reviewschema);
         }
-    ]
+    ],
+    owner : {
+            type : Schema.Types.ObjectId,
+            ref : "User"
+    }
 });
 listingSchema.post("findOneAndDelete",async(data)=>{
     if(data){
