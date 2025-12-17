@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 const initData = require("./data.js");
 const Listing = require("../models/listing.js");
+const path = require('path');
+require('dotenv').config({ path: path.join(__dirname, "../.env") });
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/wanderland";
+const MONGO_URL = process.env.MONGO_URL;
 
+console.log(MONGO_URL);
 main()
     .then(() => {
         console.log("connected to DB");
+        return initDB();
     })
     .catch((err) => {
         console.log(err);
@@ -25,4 +29,4 @@ const initDB = async () => {
     console.log("data was initialized");
 };
 
-initDB();
+// initDB();

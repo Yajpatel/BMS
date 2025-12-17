@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -5,7 +6,7 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
 const chalk = require('chalk');
-
+    
 // const { listingschema, reviewschema } = require('./schemavalidation');
 const listingrouter = require('./routes/listing.js');
 const reviewrouter = require('./routes/review.js');
@@ -18,7 +19,7 @@ const User = require('./models/user.js');
 
 const session = require('express-session');
 app.use(session({
-    secret : 'mysecret',
+    secret : process.env.SECRET,
     resave : false , 
     saveUninitialized : false,
     cookie : {
@@ -99,7 +100,7 @@ app.use((err, req, res, next) => {
 });
 
 // Listen
-const port = 5000;
+const port = process.env.PORT;
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
