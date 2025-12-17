@@ -6,7 +6,7 @@ const methodOverride = require('method-override');
 const mongoose = require('mongoose');
 const engine = require('ejs-mate');
 const chalk = require('chalk');
-    
+console.log("hi",process.env.MONGO_URL);
 // const { listingschema, reviewschema } = require('./schemavalidation');
 const listingrouter = require('./routes/listing.js');
 const reviewrouter = require('./routes/review.js');
