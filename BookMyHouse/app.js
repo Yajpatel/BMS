@@ -53,7 +53,7 @@ passport.deserializeUser(User.deserializeUser()); // Every time a request comes 
 // Connect to MongoDB
 main().then(() => console.log("MongoDB connected")).catch(err => console.log("Mongo error", err));
 async function main() {
-    await mongoose.connect("mongodb://127.0.0.1:27017/wanderland");
+    await mongoose.connect(process.env.MONGO_URL);
 }
 
 // Set up EJS and middleware
